@@ -12,6 +12,30 @@ export function ContactSection() {
 	);
 	const waHref = whatsappNumber ? `https://wa.me/${whatsappNumber}?text=${waText}` : undefined;
 
+	const [submitting, setSubmitting] = React.useState(false);
+	const [result, setResult] = React.useState<string | null>(null);
+
+	async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+		e.preventDefault();
+		const form = new FormData(e.currentTarget);
+		const payload = Object.fromEntries(form.entries());
+		setSubmitting(true);
+		setResult(null);
+		try {
+			const res = await fetch('/api/contact', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(payload),
+			});
+			const data = await res.json();
+			setResult(data.ok ? (lang === 'en' ? 'Message sent ✅' : 'Message envoyé ✅') : (lang === 'en' ? 'Failed to send ❌' : 'Échec de l’envoi ❌'));
+		} catch {
+			setResult(lang === 'en' ? 'Failed to send ❌' : 'Échec de l’envoi ❌');
+		} finally {
+			setSubmitting(false);
+		}
+	}
+
 	return (
 		<section className="mx-auto max-w-5xl px-4 py-14">
 			<h2 className="text-3xl font-semibold mb-4">{lang === 'en' ? 'Contact' : 'Contact'}</h2>
@@ -25,13 +49,14 @@ export function ContactSection() {
 					{lang === 'en' ? 'Send a message' : 'Envoyer un message'}
 				</a>
 			</div>
-			<form id="contact-form" className="mt-6 grid gap-3 max-w-xl">
-				<input className="px-3 py-2 rounded bg-black/20 border border-white/10" placeholder={lang === 'en' ? 'Your name' : 'Votre nom'} />
-				<input className="px-3 py-2 rounded bg-black/20 border border-white/10" placeholder="Email" />
-				<textarea className="px-3 py-2 rounded bg-black/20 border border-white/10" rows={4} placeholder={lang === 'en' ? 'Tell me about your project' : 'Parlez-moi de votre projet'} />
-				<button type="button" className="px-4 py-2 rounded bg-white text-black disabled:opacity-50">
-					{lang === 'en' ? 'Submit' : 'Envoyer'}
+			<form id="contact-form" onSubmit={onSubmit} className="mt-6 grid gap-3 max-w-xl">
+				<input name="name" className="px-3 py-2 rounded bg-black/20 border border-white/10" placeholder={lang === 'en' ? 'Your name' : 'Votre nom'} required />
+				<input name="email" type="email" className="px-3 py-2 rounded bg-black/20 border border-white/10" placeholder="Email" required />
+				<textarea name="message" className="px-3 py-2 rounded bg-black/20 border border-white/10" rows={4} placeholder={lang === 'en' ? 'Tell me about your project' : 'Parlez-moi de votre projet'} required />
+				<button type="submit" className="px-4 py-2 rounded bg-white text-black disabled:opacity-50" disabled={submitting}>
+					{submitting ? (lang === 'en' ? 'Sending…' : 'Envoi…') : (lang === 'en' ? 'Submit' : 'Envoyer')}
 				</button>
+				{result && <p className="text-sm opacity-80">{result}</p>}
 			</form>
 		</section>
 	);

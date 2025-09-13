@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useLang } from './i18n';
 
 export function Hero() {
@@ -29,10 +30,15 @@ export function Hero() {
 						{lang.toUpperCase()}
 					</button>
 				</div>
-				<h1 className="mt-4 text-4xl sm:text-6xl font-bold">Daniel ANDJ</h1>
-				<p className="mt-2 text-lg opacity-80">
-					{lang === 'en' ? 'The Digital Doctor' : 'Le médecin du numérique'}
-				</p>
+				<div className="mt-4 flex flex-col items-center gap-4">
+					<div className="relative h-28 w-28 rounded-full overflow-hidden border border-white/20">
+						<Image src="/photo_andj_ceo.jpg" alt="Daniel ANDJ" fill className="object-cover" />
+					</div>
+					<h1 className="text-4xl sm:text-6xl font-bold">Daniel ANDJ</h1>
+					<p className="mt-1 text-lg opacity-80">
+						{lang === 'en' ? 'The Digital Doctor' : 'Le médecin du numérique'}
+					</p>
+				</div>
 
 				<div className="mt-6 flex flex-wrap gap-3 justify-center">
 					{waHref && (

@@ -1,2 +1,27 @@
-[]
+[
+  {
+    "id": "smartphn",
+    "name": "SmartPHN",
+    "image": "/projects/smartphn.png",
+    "category": "Industry",
+    "description": "Back-office et outils de gestion (Sobraga).",
+    "tech": ["Next.js", "TypeScript", "Tailwind", "Node.js"]
+  },
+  {
+    "id": "gabomagpt",
+    "name": "GabomaGPT",
+    "image": "/projects/gabomagpt.png",
+    "category": "AI/LLM",
+    "description": "Assistant IA spécialisé (mobile + web).",
+    "tech": ["React Native", "Expo", "LLM", "Python"]
+  },
+  {
+    "id": "oraculum",
+    "name": "Oraculum (SportSense)",
+    "image": "/projects/oraculum.png",
+    "category": "Sport",
+    "description": "Analytique sportive et insights IA.",
+    "tech": ["Next.js", "TensorFlow", "Python", "AWS"]
+  }
+]
 
